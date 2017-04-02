@@ -7,7 +7,7 @@ namespace AkkaGuardian {
 
       public GrootActor() {
          Receive<string>( message => {
-            _log.Info( $"Received message {message}" );
+            _log.Info( $"Groot received message '{message}'" );
             Sender.Tell( "I am Groot" );
          } );
       }
