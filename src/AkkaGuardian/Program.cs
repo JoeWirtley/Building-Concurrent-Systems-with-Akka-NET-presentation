@@ -6,14 +6,18 @@ using Akka.Actor;
 namespace AkkaGuardian {
    class Program {
       private static Dictionary<string,IActorRef> _actors = new Dictionary<string, IActorRef>();
+      private static IActorRef _narrator;
 
       static void Main( string[] args ) {
          ActorSystem system = ActorSystem.Create( "MyActorSystem" );
 
-         IActorRef groot = system.ActorOf<GrootActor>( "groot" );
+         _narrator = system.ActorOf<NarratorActor>( "narator" );
 
+         IActorRef groot = system.ActorOf<GrootActor>( "groot" );
+         IActorRef peter = system.ActorOf<PeterQuillActor>( "peter" );
 
          RegisterActor( groot );
+         RegisterActor( peter );
 
          HandleCommands();
       }
@@ -30,15 +34,22 @@ namespace AkkaGuardian {
             if ( parts.Length == 2 ) {
                IActorRef actorRef;
                if (_actors.TryGetValue( parts[0], out actorRef ) ) {
-                  actorRef.Tell( parts[1 ]  );
+                  NarratorActor.SpeakTo message = new NarratorActor.SpeakTo( actorRef, parts[1 ] );
+                  _narrator.Tell( message );
                }
             }
          }
       }
 
       private static void RegisterActor( IActorRef actor ) {
-         _actors.Add( actor.Path.Elements.Last(), actor );
+         _actors.Add( actor.ActorName(), actor );
       }
 
+   }
+
+   public static class AkkaExtensions {
+      public static string ActorName( this IActorRef actor ) {
+         return actor.Path.Elements.Last();
+      }
    }
 }
