@@ -9,11 +9,15 @@ namespace AkkaGuardian {
       public PeterQuillActor() {
          Receive<string>( message => {
             _log.Info( $"Peter Quill received message '{message}'" );
-            Sender.Tell( RandomReply() );
+            Sender.Tell( RandomReply( message) );
          } );
       }
 
-      private string RandomReply() {
+      private string RandomReply( string message ) {
+         if ( message.Equals( "star lord", StringComparison.CurrentCultureIgnoreCase ) ) {
+            return "Finally!";
+         }
+
          string[] replies = {
             "Well that's just fascinating",
             "That's gonna wear real thin, real fast, bud",
