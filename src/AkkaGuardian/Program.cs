@@ -19,7 +19,7 @@ namespace AkkaGuardian {
          InputHandler handler = new InputHandler( groot, peter );
          Input input;
          while ( handler.GetValidInput( out input ) ) {
-            SpeakTo message = new SpeakTo( input.ActorRef, input.Phrase );
+            SpeakMessage message = new SpeakMessage( input.ActorRef, input.Phrase );
             _narrator.Tell( message );
          }
       }

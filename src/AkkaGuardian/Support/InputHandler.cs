@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Akka.Actor;
 
 namespace AkkaGuardian {
@@ -11,6 +12,8 @@ namespace AkkaGuardian {
          Console.WriteLine( "Type 'exit' and press enter to exit" );
          Console.WriteLine( "Type actor name hyphen message to send a message to an actor" );
          Console.WriteLine( "For example: groot-Hello" );
+         Console.WriteLine( $"Available actors: {string.Join(", ", actors.Select( actor => actor.ActorName() ))}");
+         Console.WriteLine( "----------------------------------------------------------------------------------" );
       }
 
       internal bool GetValidInput( out Input input ) {
