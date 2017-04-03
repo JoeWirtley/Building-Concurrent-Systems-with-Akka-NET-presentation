@@ -8,9 +8,10 @@
     <OutputType>Exe</OutputType>
     <RootNamespace>AkkaGuardian</RootNamespace>
     <AssemblyName>AkkaGuardian</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -57,9 +58,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="NarratorActor.cs" />
-    <Compile Include="PeterQuillActor.cs" />
-    <Compile Include="GrootActor.cs" />
+    <Compile Include="Actors\NarratorActor.cs" />
+    <Compile Include="Actors\PeterQuillActor.cs" />
+    <Compile Include="Actors\GrootActor.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

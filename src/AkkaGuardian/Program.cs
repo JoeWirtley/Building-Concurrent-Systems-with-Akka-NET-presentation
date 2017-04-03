@@ -27,16 +27,13 @@ namespace AkkaGuardian {
          Console.WriteLine( "Type 'exit' and press enter to exit" );
          Console.WriteLine( "Type actor name hyphen message to send a message to an actor" );
          Console.WriteLine( "For example: groot-Hello" );
-         string input = "";
-         while ( input != "exit" ) {
-            input = Console.ReadLine();
-            string[] parts = input.Split( '-' );
-            if ( parts.Length == 2 ) {
-               IActorRef actorRef;
-               if (_actors.TryGetValue( parts[0], out actorRef ) ) {
-                  NarratorActor.SpeakTo message = new NarratorActor.SpeakTo( actorRef, parts[1 ] );
-                  _narrator.Tell( message );
-               }
+         ParsedLine input = new ParsedLine();
+         while ( !input.ShouldExit ) {
+            string inputText = Console.ReadLine();
+            input = new ParsedLine( inputText, _actors);
+            if ( input.ActorRef != null ) {
+               NarratorActor.SpeakTo message = new NarratorActor.SpeakTo( input.ActorRef, input.Phrase );
+               _narrator.Tell( message );
             }
          }
       }
@@ -45,6 +42,28 @@ namespace AkkaGuardian {
          _actors.Add( actor.ActorName(), actor );
       }
 
+   }
+   public class ParsedLine {
+      public bool ShouldExit { get; }
+      public IActorRef ActorRef { get; }
+      public string Phrase { get; }
+
+      public ParsedLine() {
+         ShouldExit = false;
+      }
+
+      public ParsedLine( string input, Dictionary<string, IActorRef> actors ) {
+         string[] parts = input.Split( '-' );
+         if ( parts.Length == 2 ) {
+            IActorRef actorRef;
+            if ( actors.TryGetValue( parts[ 0 ], out actorRef ) ) {
+               ActorRef = actorRef;
+               Phrase = parts[ 1 ];
+            }
+         } else if ( input == "exit" ) {
+            ShouldExit = true;
+         }
+      }
    }
 
    public static class AkkaExtensions {
