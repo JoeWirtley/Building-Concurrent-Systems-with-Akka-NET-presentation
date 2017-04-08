@@ -10,8 +10,6 @@ namespace AkkaGuardian {
 
          ActorSystem system = ActorSystem.Create( "MyActorSystem" );
 
-         IActorRef narrator = system.ActorOf<NarratorActor>( "narator" );
-
          system.ActorOf<GrootActor>( "groot" );
          system.ActorOf<PeterQuillActor>( "peter" );
 
@@ -22,9 +20,9 @@ namespace AkkaGuardian {
          object message;
          while ( handler.GetUserInput( out message ) ) {
             if ( message is TellMessage ) {
-               narrator.Tell( message );
-            }
-            if ( message is CreateRavagerMessage ) {
+               TellMessage tellMessage = ( TellMessage ) message;
+               system.ActorSelection( $"/user/{tellMessage.Who}" ).Tell( tellMessage.What );
+            } if ( message is CreateRavagerMessage ) {
                yondu.Tell( message );
             }
             if ( message is ListRavagersMessage ) {

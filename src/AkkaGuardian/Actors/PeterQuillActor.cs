@@ -4,17 +4,12 @@ using Akka.Event;
 
 namespace AkkaGuardian {
    public class PeterQuillActor: ReceiveActor {
-      private readonly ILoggingAdapter _log = Logging.GetLogger( Context );
-
       public PeterQuillActor() {
-         Receive<string>( message => {
-            _log.Info( $"Peter Quill received message '{message}'" );
-            Sender.Tell( RandomReply( message) );
-         } );
+         Receive<string>( message => Console.WriteLine( $"Peter says '{RandomReply(message)}'") );
       }
 
       private string RandomReply( string message ) {
-         if ( message.Equals( "star lord", StringComparison.CurrentCultureIgnoreCase ) ) {
+         if ( message == "star lord" ) {
             return "Finally!";
          }
 
