@@ -16,11 +16,12 @@ namespace AkkaGuardian {
          IActorRef peter = system.ActorOf<PeterQuillActor>( "peter" );
 
 
-         InputHandler handler = new InputHandler( groot, peter );
+         InputHandler handler = new InputHandler();
          Input input;
          while ( handler.GetValidInput( out input ) ) {
-            SpeakMessage message = new SpeakMessage( input.ActorRef, input.Phrase );
-            _narrator.Tell( message );
+            if ( input is SpeakMessage ) {
+               _narrator.Tell( input );
+            }
          }
       }
 

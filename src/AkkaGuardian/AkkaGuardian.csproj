@@ -63,7 +63,6 @@
     <Compile Include="Actors\PeterQuillActor.cs" />
     <Compile Include="Actors\GrootActor.cs" />
     <Compile Include="AkkaExtensions.cs" />
-    <Compile Include="Support\Input.cs" />
     <Compile Include="Support\InputHandler.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
