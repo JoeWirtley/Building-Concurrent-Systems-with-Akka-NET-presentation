@@ -60,6 +60,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Actors\RavagerActor.cs" />
+    <Compile Include="DisplayHelper.cs" />
+    <Compile Include="Messages\KillRavagersMessage.cs" />
     <Compile Include="Messages\ListRavagersMessage.cs" />
     <Compile Include="Messages\TellMessage.cs" />
     <Compile Include="Actors\YonduActor.cs" />

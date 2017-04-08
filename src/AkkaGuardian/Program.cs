@@ -22,12 +22,13 @@ namespace AkkaGuardian {
             if ( message is TellMessage ) {
                TellMessage tellMessage = ( TellMessage ) message;
                system.ActorSelection( $"/user/{tellMessage.Who}" ).Tell( tellMessage.What );
-            } if ( message is CreateRavagerMessage ) {
+            }
+            if ( message is CreateRavagerMessage || message is KillRavagersMessage ) {
                yondu.Tell( message );
             }
             if ( message is ListRavagersMessage ) {
                string ravagerNames = yondu.Ask<string>( message ).Result;
-               Console.WriteLine( ravagerNames );
+               DisplayHelper.List( ravagerNames );
             }
          }
       }

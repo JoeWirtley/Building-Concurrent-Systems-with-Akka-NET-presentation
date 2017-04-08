@@ -4,27 +4,38 @@ using AkkaGuardian.Messages;
 namespace AkkaGuardian {
    public class InputHandler {
       public InputHandler() {
-         Console.WriteLine( "Type 'exit' and press enter to exit" );
-         Console.WriteLine( "Type 'tell {actor name} message' to send a message to an actor" );
-         Console.WriteLine( "   For example: tell groot Hello" );
-         Console.WriteLine( "Type 'create ravager' to create a new ravager" );
+         Console.WriteLine( "Available commands" );
+         Console.WriteLine( "  tell {actor} {text} = say {message} to {actor}" );
+         Console.WriteLine( "  create ravager      = create a new ravager" );
+         Console.WriteLine( "  list ravagers       = list all ravagers" );
+         Console.WriteLine( "  kill ravagers       = remove all ravagers" );
+         Console.WriteLine( "  exit                = get outta here" );
          Console.WriteLine( "----------------------------------------------------------------------------------" );
       }
 
       internal bool GetUserInput( out object message ) {
          message = new object();
          do {
-            string inputText = Console.ReadLine();
-            if ( inputText.Contains( "tell" ) ) {
-               message = ParseTell( inputText );
-            } else if ( inputText.Contains( "create" ) && inputText.Contains( "ravager" ) ) {
-               message = new CreateRavagerMessage();
-            } else if ( inputText.Contains( "list" ) && inputText.Contains( "ravager" ) ) {
-               message = new ListRavagersMessage();
-            } else if ( inputText.Contains( "exit" ) ) {
-               break;
+            try {
+               string inputText = Console.ReadLine();
+               if ( inputText.Contains( "tell" ) ) {
+                  message = ParseTell( inputText );
+               } else if ( inputText.Contains( "create" ) && inputText.Contains( "ravager" ) ) {
+                  message = new CreateRavagerMessage();
+               } else if ( inputText.Contains( "list" ) && inputText.Contains( "ravagers" ) ) {
+                  message = new ListRavagersMessage();
+               } else if ( inputText.Contains( "kill" ) && inputText.Contains( "ravagers" ) ) {
+                  message = new KillRavagersMessage();
+               } else if ( inputText.Contains( "exit" ) ) {
+                  break;
+               } else {
+                  DisplayHelper.Warn( "What?" );
+               }
+               return true;
+            } catch {
+               // probably a parsing error, just go on with life
+               DisplayHelper.Warn( "What?" );
             }
-            return true;
          } while ( true );
          return false;
       }

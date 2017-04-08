@@ -2,23 +2,45 @@
 using System.Collections.Generic;
 using System.Linq;
 using Akka.Actor;
-using Akka.Event;
 using AkkaGuardian.Messages;
 
 namespace AkkaGuardian {
    public class YonduActor: ReceiveActor {
-      private readonly ILoggingAdapter _log = Logging.GetLogger( Context );
       private readonly List<IActorRef> _ravagers = new List<IActorRef>();
+      private int _numberOfRavagers = 0;
 
       public YonduActor() {
-         Receive<string>( message => {
-            _log.Info( $"Yondu received message '{message}'" );
-            Sender.Tell( RandomReply( message) );
-         } );
-         Receive<CreateRavagerMessage>( message => _ravagers.Add(Context.ActorOf<RavagerActor>()) );
-         Receive<ListRavagersMessage>( message => 
-            Sender.Tell(  string.Join( ", ", _ravagers.Select( r => r.ActorName() ).ToArray()) )
-          );
+         Receive<string>( message => 
+             DisplayHelper.Say( RandomReply( message ) ) 
+         );
+         Receive<CreateRavagerMessage>( message => {
+               var ravager = Context.ActorOf<RavagerActor>( "ravager" + ++_numberOfRavagers );
+               Context.Watch( ravager );
+               _ravagers.Add( ravager );
+            }
+         );
+         Receive<KillRavagersMessage>( message => {
+               foreach ( var ravager in _ravagers ) {
+                  Context.Stop( ravager );
+               }
+            }
+         );
+         Receive<ListRavagersMessage>( message => {
+               string ravagerList;
+               if ( _ravagers.Count == 0 ) {
+                  ravagerList = "No ravagers";
+               } else {
+                  ravagerList = string.Join( ", ", _ravagers.Select( r => r.ActorName() ).ToArray() );
+               }
+               Sender.Tell( ravagerList );
+            }
+         );
+         Receive<Terminated>( message => {
+               if ( _ravagers.Contains( Sender ) ) {
+                  _ravagers.Remove( Sender );
+               }
+            }
+         );
       }
 
       private string RandomReply( string message ) {
