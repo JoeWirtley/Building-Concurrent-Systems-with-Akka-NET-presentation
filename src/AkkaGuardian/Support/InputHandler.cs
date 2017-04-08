@@ -1,21 +1,26 @@
 using System;
-using Akka.Actor;
+using AkkaGuardian.Messages;
 
 namespace AkkaGuardian {
    public class InputHandler {
       public InputHandler() {
          Console.WriteLine( "Type 'exit' and press enter to exit" );
          Console.WriteLine( "Type 'tell {actor name} message' to send a message to an actor" );
-         Console.WriteLine( "For example: tell groot Hello" );
+         Console.WriteLine( "   For example: tell groot Hello" );
+         Console.WriteLine( "Type 'create ravager' to create a new ravager" );
          Console.WriteLine( "----------------------------------------------------------------------------------" );
       }
 
-      internal bool GetValidInput( out Input input ) {
-         input = new Input();
+      internal bool GetUserInput( out object message ) {
+         message = new object();
          do {
             string inputText = Console.ReadLine();
             if ( inputText.Contains( "tell" ) ) {
-               input = ParseTell( inputText );
+               message = ParseTell( inputText );
+            } else if ( inputText.Contains( "create" ) && inputText.Contains( "ravager" ) ) {
+               message = new CreateRavagerMessage();
+            } else if ( inputText.Contains( "list" ) && inputText.Contains( "ravager" ) ) {
+               message = new ListRavagersMessage();
             } else if ( inputText.Contains( "exit" ) ) {
                break;
             }
@@ -24,14 +29,11 @@ namespace AkkaGuardian {
          return false;
       }
 
-      private Input ParseTell( string inputText ) {
+      private TellMessage ParseTell( string inputText ) {
          int firstSpace = inputText.IndexOf( " " );
          inputText = inputText.Substring( firstSpace + 1 );
          firstSpace = inputText.IndexOf( " " );
-         return new SpeakMessage( inputText.Substring( 0, firstSpace  ), inputText.Substring( firstSpace + 1 ) );
+         return new TellMessage( inputText.Substring( 0, firstSpace  ), inputText.Substring( firstSpace + 1 ) );
       }
-   }
-
-   public class Input {
    }
 }

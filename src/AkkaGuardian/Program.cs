@@ -1,26 +1,35 @@
 ﻿using System;
 using Akka.Actor;
+using AkkaGuardian.Messages;
 
 namespace AkkaGuardian {
    class Program {
-      private static IActorRef _narrator;
 
       static void Main( string[] args ) {
          AdjustConsoleWindow();
 
          ActorSystem system = ActorSystem.Create( "MyActorSystem" );
 
-         _narrator = system.ActorOf<NarratorActor>( "narator" );
+         IActorRef narrator = system.ActorOf<NarratorActor>( "narator" );
 
-         IActorRef groot = system.ActorOf<GrootActor>( "groot" );
-         IActorRef peter = system.ActorOf<PeterQuillActor>( "peter" );
+         system.ActorOf<GrootActor>( "groot" );
+         system.ActorOf<PeterQuillActor>( "peter" );
 
+         IActorRef yondu = system.ActorOf<YonduActor>( "yondu" );
 
          InputHandler handler = new InputHandler();
-         Input input;
-         while ( handler.GetValidInput( out input ) ) {
-            if ( input is SpeakMessage ) {
-               _narrator.Tell( input );
+
+         object message;
+         while ( handler.GetUserInput( out message ) ) {
+            if ( message is TellMessage ) {
+               narrator.Tell( message );
+            }
+            if ( message is CreateRavagerMessage ) {
+               yondu.Tell( message );
+            }
+            if ( message is ListRavagersMessage ) {
+               string ravagerNames = yondu.Ask<string>( message ).Result;
+               Console.WriteLine( ravagerNames );
             }
          }
       }

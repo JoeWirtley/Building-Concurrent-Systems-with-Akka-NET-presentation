@@ -60,9 +60,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Actors\NarratorActor.cs" />
+    <Compile Include="Actors\RavagerActor.cs" />
+    <Compile Include="Messages\ListRavagersMessage.cs" />
+    <Compile Include="Messages\TellMessage.cs" />
+    <Compile Include="Actors\YonduActor.cs" />
     <Compile Include="Actors\PeterQuillActor.cs" />
     <Compile Include="Actors\GrootActor.cs" />
     <Compile Include="AkkaExtensions.cs" />
+    <Compile Include="Messages\CreateRavagerMessage.cs" />
     <Compile Include="Support\InputHandler.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
