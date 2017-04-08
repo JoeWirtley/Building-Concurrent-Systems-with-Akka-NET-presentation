@@ -10,11 +10,12 @@ namespace AkkaGuardian {
       private int _numberOfRavagers = 0;
 
       public YonduActor() {
-         Receive<string>( message => 
-             DisplayHelper.Say( RandomReply( message ) ) 
+         Receive<string>( message =>
+            DisplayHelper.Say( RandomReply( message ) )
          );
          Receive<CreateRavagerMessage>( message => {
-               var ravager = Context.ActorOf<RavagerActor>( "ravager" + ++_numberOfRavagers );
+               _numberOfRavagers = _numberOfRavagers + 1;
+               var ravager = Context.ActorOf<RavagerActor>( "ravager" + _numberOfRavagers );
                Context.Watch( ravager );
                _ravagers.Add( ravager );
             }

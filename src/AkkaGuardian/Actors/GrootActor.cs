@@ -1,5 +1,4 @@
-﻿using System;
-using Akka.Actor;
+﻿using Akka.Actor;
 
 namespace AkkaGuardian {
    public class GrootActor: ReceiveActor {

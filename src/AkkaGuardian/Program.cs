@@ -35,6 +35,7 @@ namespace AkkaGuardian {
 
       private static void AdjustConsoleWindow() {
          Console.SetWindowSize( Math.Min( 150, Console.LargestWindowWidth ), Math.Min( 40, Console.LargestWindowHeight ) );
+         Console.ForegroundColor = ConsoleColor.Cyan;
       }
    }
 }
