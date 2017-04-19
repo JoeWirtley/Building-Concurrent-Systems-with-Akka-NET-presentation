@@ -4,11 +4,10 @@ using AkkaGuardian.Messages;
 
 namespace AkkaGuardian {
    class Program {
-
       static void Main( string[] args ) {
          AdjustConsoleWindow();
 
-         ActorSystem system = ActorSystem.Create( "MyActorSystem" );
+         ActorSystem system = ActorSystem.Create( "GuardiansOfTheGalaxy" );
 
          system.ActorOf<GrootActor>( "groot" );
          system.ActorOf<PeterQuillActor>( "peter" );
@@ -20,8 +19,8 @@ namespace AkkaGuardian {
          object message;
          while ( handler.GetUserInput( out message ) ) {
             if ( message is TellMessage ) {
-               TellMessage tellMessage = ( TellMessage ) message;
-               system.ActorSelection( $"/user/{tellMessage.Who}" ).Tell( tellMessage.What );
+               string actorName = ( message as TellMessage ).Who;
+               system.ActorSelection( $"/user/{actorName}" ).Tell( message );
             }
             if ( message is CreateRavagerMessage || message is KillRavagersMessage ) {
                yondu.Tell( message );
@@ -34,7 +33,7 @@ namespace AkkaGuardian {
       }
 
       private static void AdjustConsoleWindow() {
-         Console.SetWindowSize( Math.Min( 150, Console.LargestWindowWidth ), Math.Min( 40, Console.LargestWindowHeight ) );
+         Console.SetWindowSize( Math.Min( 125, Console.LargestWindowWidth ), Math.Min( 40, Console.LargestWindowHeight ) );
          Console.ForegroundColor = ConsoleColor.Cyan;
       }
    }

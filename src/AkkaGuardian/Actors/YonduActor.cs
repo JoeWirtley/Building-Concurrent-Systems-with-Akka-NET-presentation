@@ -10,8 +10,8 @@ namespace AkkaGuardian {
       private int _numberOfRavagers = 0;
 
       public YonduActor() {
-         Receive<string>( message =>
-            DisplayHelper.Say( RandomReply( message ) )
+         Receive<TellMessage>( message =>
+            DisplayHelper.Say( RandomReply() )
          );
          Receive<CreateRavagerMessage>( message => {
                _numberOfRavagers = _numberOfRavagers + 1;
@@ -44,7 +44,7 @@ namespace AkkaGuardian {
          );
       }
 
-      private string RandomReply( string message ) {
+      private string RandomReply() {
          string[] replies = {
             "We're Ravagers, we got a code.",
             "I may be as pretty as an angel, but I sure as hell ain't one."

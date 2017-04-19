@@ -1,9 +1,10 @@
 ﻿using Akka.Actor;
+using AkkaGuardian.Messages;
 
 namespace AkkaGuardian {
    public class GrootActor: ReceiveActor {
       public GrootActor() {
-         Receive<string>( message => DisplayHelper.Say( "Groot says 'I am Groot'" ) );
+         Receive<TellMessage>( message => DisplayHelper.Say( "Groot says 'I am Groot'" ) );
       }
    }
 }

@@ -1,10 +1,11 @@
 ﻿using System;
 using Akka.Actor;
+using AkkaGuardian.Messages;
 
 namespace AkkaGuardian {
    public class PeterQuillActor: ReceiveActor {
       public PeterQuillActor() {
-         Receive<string>( message => DisplayHelper.Say( $"Peter says '{RandomReply( message )}'" ) );
+         Receive<TellMessage>( message => DisplayHelper.Say( $"Peter says '{RandomReply( message.What )}'" ) );
       }
 
       private string RandomReply( string message ) {
