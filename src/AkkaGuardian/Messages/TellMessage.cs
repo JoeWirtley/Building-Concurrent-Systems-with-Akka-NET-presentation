@@ -7,5 +7,9 @@
          Who = who;
          What = what;
       }
+
+      public bool Contains( string toFind ) {
+         return What.ToLower().Contains( toFind.ToLower() );
+      }
    }
 }
