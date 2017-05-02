@@ -7,15 +7,15 @@ using AkkaGuardian.Messages;
 namespace AkkaGuardian {
    public class YonduActor: ReceiveActor {
       private readonly List<IActorRef> _ravagers = new List<IActorRef>();
-      private int _numberOfRavagers = 0;
+      private int _ravagerIndex = 0;
 
       public YonduActor() {
          Receive<TellMessage>( message =>
             DisplayHelper.Say( RandomReply() )
          );
          Receive<CreateRavagerMessage>( message => {
-               _numberOfRavagers = _numberOfRavagers + 1;
-               var ravager = Context.ActorOf<RavagerActor>( "ravager" + _numberOfRavagers );
+               _ravagerIndex = _ravagerIndex + 1;
+               var ravager = Context.ActorOf<RavagerActor>( "ravager" + _ravagerIndex );
                Context.Watch( ravager );
                _ravagers.Add( ravager );
             }
