@@ -7,7 +7,7 @@ namespace AkkaGuardian {
       static void Main( string[] args ) {
          AdjustConsoleWindow();
 
-         ActorSystem system = ActorSystem.Create( "GuardiansOfTheGalaxy" );
+         ActorSystem system = ActorSystem.Create( "guardians" );
 
          system.ActorOf<GrootActor>( "groot" );
          system.ActorOf<PeterQuillActor>( "peter" );
